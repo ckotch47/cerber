@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "cerber"
+version = "2024.5.1a"
+description = ""
+authors = ["ckotch47"]
+readme = "README.md"
+
+
+[tool.poetry.urls]
+"homepage" = "https://github.com/ckotch47/cerber"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+cerber = 'cerber:main'
