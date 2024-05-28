@@ -15,6 +15,9 @@ class CerberBase:
             if len(tmp) > 2:
                 self.host = host.replace(f":{tmp[-1]}", '')
                 self.port = tmp[-1]
+            elif len(tmp) == 2:
+                self.host = tmp[0]
+                self.port = tmp[1]
             else:
                 self.host = host
                 self.port = None
