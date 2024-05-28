@@ -1,9 +1,11 @@
 from cerber.src.utils import CerberBase
 from print_color import print
+
 try:
     import paramiko
 except:
     pass
+
 
 class SshCerber(CerberBase):
 

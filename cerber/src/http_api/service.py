@@ -2,7 +2,7 @@ import json
 
 from cerber.src.utils import CerberBase
 from print_color import print
-import psycopg
+import timeit
 import httpx
 
 
@@ -28,15 +28,20 @@ class HttpApiCerber(CerberBase):
         url = self._replace(url, user, passwd)
         header = self._replace(header, user, passwd)
         body = self._replace(body, user, passwd)
-
+        start = 0
+        stop = 0
         try:
             # print(url, self.method, header, body)
+            start = timeit.default_timer()
             tmp = self._request(url, self.method, header, body)
+            stop = timeit.default_timer()
             tmp.raise_for_status()
-            print(f"{user}:{passwd}", tag='success', tag_color='green')
+
+            print(f"[Time request]: {round((stop - start), 3)} | {user}:{passwd}", tag='success', tag_color='green')
+            return [round((stop - start), 3), user, passwd, 'success']
         except Exception as e:
             if self.debug:
-                print(f"{user}:{passwd} / {str(e).split('\n')[0]}", tag='fail', tag_color='red')
+                print(f"[Time request]: {round((stop - start), 3)} | {user}:{passwd} | {str(e).split('\n')[0]}", tag='fail', tag_color='red')
             return None
 
     def _request(self, url: str, method: str, header: str, body: str):
