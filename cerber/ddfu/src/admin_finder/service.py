@@ -2,8 +2,8 @@ import time
 
 import requests
 from print_color import print
-from ddfu.src.common.file_base import FileBase
-from ddfu.src.common.progress_bar_base import ProgressBarBase
+from cerber.ddfu.src.common.file_base import FileBase
+from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
 
 
 # class AdminFinder:

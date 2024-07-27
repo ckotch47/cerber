@@ -1,6 +1,6 @@
-from ddfu.src.dns_resolver.service import DnsResolverService
+from cerber.ddfu.src.dns_resolver.service import DnsResolverService
 from print_color import print
-from ddfu.src.common.progress_bar_base import ProgressBarBase
+from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
 
 
 class DnsBruteforceService(DnsResolverService):

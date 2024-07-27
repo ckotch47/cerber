@@ -5,8 +5,8 @@ import uuid
 import requests as req
 from requests import Response
 
-from ddfu.src.common.file_base import FileBase
-from ddfu.src.common.progress_bar_base import ProgressBarBase
+from cerber.ddfu.src.common.file_base import FileBase
+from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
 from print_color import print
 
 

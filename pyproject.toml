@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "ddfu"
-version = "0.0.2"
+name = "cerber"
+version = "2024.07.01"
 description = ""
 authors = ["ckotch47"]
 readme = "README.md"
 
 [tool.poetry.urls]
-"homepage" = "https://github.com/ckotch47/cerberus"
+"homepage" = "https://github.com/ckotch47/cerber"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -22,5 +22,5 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.scripts]
-cerber = 'ddfu:main'
-cerber-api = 'api_scan:main'
+cerber = 'cerber.ddfu:main'
+cerber-api = 'cerber.api_scan:main'

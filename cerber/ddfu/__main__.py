@@ -1,8 +1,8 @@
-from ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing
+from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing
 from print_color import print
 import pyfiglet
 
-from ddfu.utils.parser import m_arguments
+from cerber.ddfu.utils.parser import m_arguments
 
 
 def main_dns_resolve(arguments):
@@ -26,7 +26,7 @@ def main_dns_resolve(arguments):
 def main():
     arguments = m_arguments
     print(
-        pyfiglet.figlet_format("cerberus"),
+        pyfiglet.figlet_format("cerber"),
         color='c'
     )
     try:

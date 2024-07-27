@@ -2,7 +2,7 @@ import json
 import requests
 from print_color import print
 
-from api_scan.src.utils.progress_bar import ProgressBarBase
+from cerber.api_scan.src.utils.progress_bar import ProgressBarBase
 
 
 # TODO genearate param for {payeload}
@@ -54,7 +54,11 @@ class OpenApi:
                 print(e, color='r')
                 exit(-1)
         else:
-            self.openapi_json = json.load(open(self.arg.w))
+            try:
+                self.openapi_json = json.load(open(self.arg.w))
+            except Exception as e:
+                print('not -w param', color='r')
+                exit(-1)
         try:
             self.paths = self.openapi_json['paths']
             self.schemas = self.openapi_json['components']['schemas']
