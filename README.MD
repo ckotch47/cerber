@@ -63,9 +63,9 @@ poetry build
 poetry run cerber
 
 ## for install package
-pip install https://github.com/ckotch47/ddfu/releases/download/0.0.1/cerber-x.x.x-py3-none-any.whl
+pip install https://github.com/ckotch47/cerber/releases/download/0.0.1/cerber-x.x.x-py3-none-any.whl
 
 or
 
-pip install https://github.com/ckotch47/ddfu/releases/download/0.0.1/cerber-x.x.x.tar.gz
+pip install https://github.com/ckotch47/cerber/releases/download/0.0.1/cerber-x.x.x.tar.gz
 
