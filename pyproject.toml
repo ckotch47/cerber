@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "ddfu"
+version = "0.0.2"
+description = ""
+authors = ["ckotch47"]
+readme = "README.md"
+
+[tool.poetry.urls]
+"homepage" = "https://github.com/ckotch47/cerberus"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+print-color = "^0.4.6"
+dnspython = "^2.6.1"
+requests = "^2.31.0"
+progress = "^1.6"
+pyfiglet = "^1.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+cerber = 'ddfu:main'
+cerber-api = 'api_scan:main'
