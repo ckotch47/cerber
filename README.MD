@@ -20,6 +20,7 @@
 | -timeout | задержка между запросами для подбора панелей                                                                                          |
 | -ip      | ip v4 для поиска имени хоста на нем                                                                                                   |
 | -map     | включить сканирование портов на хосте или ip адрессе                                                                                  |
+| -tp      | количество портов для сканирование 100, 1000, 0 (все)                                                                                 |
 
 Примеры запуска 
 
@@ -38,6 +39,8 @@ cerberus --ip 192.168.0.1                                                 : try 
 cerberus --host google.com -map                                           : for scan port on host
 
 cerberus --ip 192.168.0.1 -map                                            : for scan port on ip    
+
+cerberus --ip 192.168.0.1 -map -tp 100                                    : for scan top 100 port on ip
 
 cerberus -fuzz --url https://example/FUZZ --header '{"Authorization": ""}' --method get --body '{"id":"FUZZUUID4", "docs": "fuzz"}' -p fuzz.txt
 

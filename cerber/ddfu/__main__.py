@@ -45,7 +45,7 @@ def main():
             return
         if arguments.host and arguments.map:
             host_ip = DnsResolverService().resolve(arguments.host, show_failed=True)
-            PortScan().scan(host_ip)
+            PortScan().scan(host_ip, arguments.w, arguments.tp)
             return
         if arguments.fuzz:
             Fuzzing(arguments.url, arguments.method,  arguments.header, arguments.body, arguments.w, arguments.timeout).fuzz()

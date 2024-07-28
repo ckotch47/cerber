@@ -9,6 +9,7 @@ epilog_text = '''
         cerberus --ip 192.168.0.1                                                 : try find hosting server
         cerberus --host google.com -map                                           : for scan port on host
         cerberus --ip 192.168.0.1 -map                                            : for scan port on ip    
+        cerberus --ip 192.168.0.1 -map -tp 100                                    : for scan top 100 port on ip    
         cerberus -fuzz --url https://example/FUZZ --header '{"Authorization": ""}': for fuzz
         --method get --body '{"id":"FUZZUUID4", "docs": "fuzz"}' -p fuzz.txt
     
@@ -36,7 +37,7 @@ parser.add_argument(
 parser.add_argument(
     '-w',
     type=str,
-    default='worldlist/subdomains-100.txt',
+    default=None,
     required=False,
     help='path for wordlist subdomain txt for resolve dns'
 )
@@ -79,11 +80,11 @@ parser.add_argument(
     help='active adminfinder panel'
 )
 parser.add_argument(
-        '-so',
-        type=str,
-        default=None,
-        help='show only (example -show 200,201), default 99-399'
-    )
+    '-so',
+    type=str,
+    default=None,
+    help='show only (example -show 200,201), default 99-399'
+)
 parser.add_argument(
     '-exc',
     type=str,
@@ -111,7 +112,12 @@ parser.add_argument(
     action=argparse.BooleanOptionalAction,
     help='active port scan for --ip'
 )
-
+parser.add_argument(
+    '-tp',
+    type=int,
+    default=1000,
+    help='count for port scan'
+)
 parser.add_argument(
     '-fuzz',
     type=bool,
