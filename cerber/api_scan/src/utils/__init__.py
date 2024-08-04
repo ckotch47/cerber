@@ -8,6 +8,8 @@ Example usage:
     cerber-api --host [:1] -w openapi.json -header header.json -show 200,201 
     cerber-api --host [:1] -w openapi.json -header header.json -exclude 401,401
     cerber-ap --host [:1] -w openapi.json -header header.json 
+    
+    cerber-ap --host [:1] -w openapi.json -header '{"auth": "jwt"}'
     '''
 
     parser = argparse.ArgumentParser(
@@ -32,7 +34,7 @@ Example usage:
         '-header',
         type=str,
         default=None,
-        help='path to file headers.json'
+        help='path to file headers.json or json string'
     )
     # dispatcher
     parser.add_argument(

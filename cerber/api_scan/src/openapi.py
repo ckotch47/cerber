@@ -63,7 +63,7 @@ class OpenApi:
             self.paths = self.openapi_json['paths']
             self.schemas = self.openapi_json['components']['schemas']
 
-            self.bar = ProgressBarBase(len(self.paths.keys()), 'Scan port')
+            self.bar = ProgressBarBase(len(self.paths.keys()), 'Scan api')
 
             for key in self.paths.keys():
                 for method in self.paths[key].keys():
