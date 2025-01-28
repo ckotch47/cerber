@@ -6,11 +6,13 @@ class DnsGetPtr:
     record = []
 
     def get(self, ip: str):
-        print(ip)
-        result = dns.resolver.resolve(f'{ip}.in-addr.arpa.', 'PTR')
-        for val in result:
-            self.record.append(val.to_text())
-        return
+        try:
+            result = dns.resolver.resolve(f'{ip}.in-addr.arpa.', 'PTR')
+            for val in result:
+                self.record.append(val.to_text())
+            return
+        except:
+            print(ip, color='c', tag="fail", tag_color='r')
 
     def print_(self):
         for i in self.record:

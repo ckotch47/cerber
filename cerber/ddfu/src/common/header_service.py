@@ -24,17 +24,19 @@ class HeaderService:
 
     @staticmethod
     def get_useragent():
-        file = open('worldlist/ua.txt')
-        file = file.readlines()
-        res: str = random.choice(file)
-        return res.replace('\n', '')
+        try:
+            file = open('worldlist/ua.txt')
+            file = file.readlines()
+            res: str = random.choice(file)
+            return res.replace('\n', '')
+        except:
+            return ''
 
     def header(self, host='http://localhost'):
         return {
             'User-Agent': self.get_useragent(),
-            'Cache-Control': random.choice(self.cache_type),
-            'Accept-Encoding': random.choice(self.accept_encode),
-            'Keep-Alive': '42',
-            'Host': host,
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate, br, zstd',
+
             'Referer': random.choice(self.bots)
         }

