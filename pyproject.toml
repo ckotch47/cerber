@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cerber"
-version = "2024.08.01a"
+version = "2025.01.0"
 description = ""
 authors = ["ckotch47"]
 readme = "README.md"
@@ -15,7 +15,6 @@ dnspython = "^2.6.1"
 requests = "^2.31.0"
 progress = "^1.6"
 pyfiglet = "^1.0.2"
-beautifulsoup4 = "^4.12.3"
 
 [build-system]
 requires = ["poetry-core"]

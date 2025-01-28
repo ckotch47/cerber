@@ -1,9 +1,10 @@
+from importlib import metadata
+
 from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing
 from print_color import print
 import pyfiglet
 
 from cerber.ddfu.utils.parser import m_arguments
-
 
 def main_dns_resolve(arguments):
     dns_resolve = DnsResolverService()
@@ -30,6 +31,10 @@ def main():
         color='c'
     )
     try:
+        if arguments.v:
+
+            print(metadata.version('cerber'))
+            return
         if arguments.ddos:
             run_ddos_request(arguments.host, arguments.port, arguments.t)
             return

@@ -1,7 +1,7 @@
 import re
 
 import requests as req
-from bs4 import BeautifulSoup
+
 
 google_modes = [
     'https://www.google.com/search?q=site:{{target}}+ext:doc+|+ext:docx+|+ext:odt+|+ext:rtf+|+ext:sxw+|+ext:psw+|+ext:ppt+|+ext:pptx+|+ext:pps+|+ext:csv',
@@ -29,24 +29,8 @@ class GoogleHacking:
     target = ''
     method = 0
     def hack(self, target: str, method: int):
-        self.target = target
-        self.method = method
-        str_search = google_modes[method-1].replace('{{target}}', target)
-        if method == 17:
-            print(str_search)
-            return
-        res = self.get_request(f"{str_search}")
-        try:
-            print(f'Search string (click for detail): https://www.google.com/search?q={str_search}')
-            soup = BeautifulSoup(res.text, "html.parser")
-
-            tmp = soup.body.select('div#main')[0]
-            for i in tmp.findAll('a', href=True):
-                if str(i['href']).find(target) != -1 and i.find('h3'):
-                    print(re.search(r'http[\S]*&', i['href'])[0].split('&')[0],  i.find('h3').getText())
-        except Exception as e:
-            print(e)
-            pass
+        print('Not allowed now')
+        return None
 
     def get_request(self, path: str):
         return req.get(path)

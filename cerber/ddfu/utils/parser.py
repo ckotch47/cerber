@@ -150,4 +150,12 @@ parser.add_argument(
     default=None,
     help='add body params to post method to fuzzing (json string)'
 )
+parser.add_argument(
+    '-v',
+    type=bool,
+    default=False,
+    required=False,
+    action=argparse.BooleanOptionalAction,
+    help='print your version cerber'
+)
 m_arguments = parser.parse_args()
