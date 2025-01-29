@@ -5,3 +5,4 @@ from .admin_finder.service import AdminFinder
 from .dns_get_ptr.service import dns_get_ptr, DnsGetPtr
 from .portscan.service import PortScan
 from .fuzzing.service import Fuzzing
+from .os_detect.service import OSDetector

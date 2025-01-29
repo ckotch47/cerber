@@ -16,7 +16,8 @@ class AdminFinder:
 
     def _request(self, url, host):
         return requests.get(
-            url=f'{url}'
+            url=f'{url}',
+            timeout=30
         )
 
     def admin_finder_request(self, url: str, timeout: int = 0, filename: str = 'worldlist/admin-page.txt',

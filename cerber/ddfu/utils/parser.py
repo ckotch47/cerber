@@ -118,6 +118,16 @@ parser.add_argument(
     default=1000,
     help='count for port scan'
 )
+
+parser.add_argument(
+    '-os',
+    type=bool,
+    default=False,
+    required=False,
+    action=argparse.BooleanOptionalAction,
+    help='active os detector --ip'
+)
+
 parser.add_argument(
     '-fuzz',
     type=bool,

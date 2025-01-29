@@ -1,6 +1,6 @@
 from importlib import metadata
 
-from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing
+from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing, OSDetector
 from print_color import print
 import pyfiglet
 
@@ -32,7 +32,6 @@ def main():
     )
     try:
         if arguments.v:
-
             print(metadata.version('cerber'))
             return
         if arguments.ddos:
@@ -41,6 +40,12 @@ def main():
         if arguments.admin:
             AdminFinder().admin_finder_request(arguments.host, arguments.timeout, arguments.w, arguments.so, arguments.exc)
             return
+
+        if arguments.ip and arguments.os:
+            detector = OSDetector()
+            detector.run(arguments.ip)
+            return
+
         if arguments.ip and not arguments.map:
             dns_get_ptr.get(arguments.ip)
             dns_get_ptr.print_()
@@ -48,6 +53,7 @@ def main():
         if arguments.ip and arguments.map:
             PortScan().scan(arguments.ip, arguments.w)
             return
+
         if arguments.host and arguments.map:
             host_ip = DnsResolverService().resolve(arguments.host, show_failed=True)
             PortScan().scan(host_ip, arguments.w, arguments.tp)
