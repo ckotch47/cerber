@@ -1,12 +1,15 @@
 from importlib import metadata
 
 from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing, OSDetector
+from cerber.utils import Logger
 from print_color import print
 import pyfiglet
 
 from cerber.ddfu.utils.parser import m_arguments
 
 def main_dns_resolve(arguments):
+    Logger.log_level = 0
+
     dns_resolve = DnsResolverService()
     dns_bruteforce = DnsBruteforceService()
     dns_bruteforce.debug = False
@@ -15,6 +18,8 @@ def main_dns_resolve(arguments):
 
     if not arguments.host:
         return
+
+    arguments.host = arguments.host.replace('http://', '').replace('https://', '')
 
     if not arguments.b:
         dns_resolve.resolve(arguments.host, show_failed=True)

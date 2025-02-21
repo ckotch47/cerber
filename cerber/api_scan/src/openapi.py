@@ -3,6 +3,7 @@ import requests
 from print_color import print
 
 from cerber.api_scan.src.utils.progress_bar import ProgressBarBase
+from cerber.utils import Logger
 
 
 # TODO genearate param for {payeload}
@@ -22,11 +23,12 @@ class OpenApi:
         self.bar = None
         self.arg = args_parser
         if 'w' not in self.arg:
+            Logger.error("not -w param")
             exit(1)
-            return
+
         try:
             self.headers = json.load(open(self.arg.header))
-        except Exception as e:
+        except:
             if self.arg.header:
                 try:
                     self.headers = json.loads(str(self.arg.header))
@@ -51,17 +53,20 @@ class OpenApi:
             try:
                 self.openapi_json = json.loads(str(requests.get(self.arg.w).text))
             except Exception as e:
-                print(e, color='r')
+                Logger.error(e)
                 exit(-1)
         else:
             try:
                 self.openapi_json = json.load(open(self.arg.w))
             except Exception as e:
-                print('not -w param', color='r')
+                Logger.error('not -w param')
                 exit(-1)
         try:
             self.paths = self.openapi_json['paths']
-            self.schemas = self.openapi_json['components']['schemas']
+            try:
+                self.schemas = self.openapi_json['components']['schemas']
+            except:
+                self.schemas = []
 
             self.bar = ProgressBarBase(len(self.paths.keys()), 'Scan api')
 
@@ -96,7 +101,9 @@ class OpenApi:
                 method=method.upper(),
                 url=f"{self.server}{route}",
                 params=param,
-                headers=self.headers)
+                headers=self.headers,
+                allow_redirects=False
+            )
             self.result.append([res.status_code, route, method])
         except Exception as e:
             print(e)

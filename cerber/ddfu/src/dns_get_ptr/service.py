@@ -1,6 +1,8 @@
 import dns.resolver
 from print_color import print
 
+from cerber.utils import Logger
+
 
 class DnsGetPtr:
     record = []
@@ -11,8 +13,9 @@ class DnsGetPtr:
             for val in result:
                 self.record.append(val.to_text())
             return
-        except:
-            print(ip, color='c', tag="fail", tag_color='r')
+        except Exception as e:
+            Logger.error(e)
+            exit(1)
 
     def print_(self):
         for i in self.record:

@@ -1,15 +1,19 @@
 import dns.resolver
 from print_color import print
 
+from cerber.utils import Logger
+
 
 class DnsResolverService:
     debug = False
 
-    def _print_success(self, domain: str, address: str):
+    @staticmethod
+    def _print_success(domain: str, address: str):
 
         print(f"{domain} -> {address}", color='c', tag="success", tag_color='g')
 
-    def _print_failure(self, domain: str):
+    @staticmethod
+    def _print_failure(domain: str):
         print(domain, color='c', tag="fail", tag_color='r')
 
     def resolve(self, domain: str = 'google.com', show_success: bool = True, show_failed: bool = False):
@@ -32,6 +36,5 @@ class DnsResolverService:
                     self._print_success(domain, rr.address)
                 return rr.address
         except Exception as e:
-            if show_failed or self.debug:
-                self._print_failure(domain)
-            return None
+            Logger.error(e)
+            exit(1)

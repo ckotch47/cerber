@@ -2,7 +2,9 @@ import os
 
 from cerber.ddfu.src.dns_resolver.service import DnsResolverService
 from print_color import print
-from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
+
+from cerber.utils import Logger
+from cerber.utils.progress_bar_base import ProgressBarBase
 
 
 class DnsBruteforceService(DnsResolverService):
@@ -15,13 +17,13 @@ class DnsBruteforceService(DnsResolverService):
     def _get_file(self, path: str = None, size: int = None) -> list[str]:
         file_path = self._get_file_path(path, size)
         if not os.path.exists(file_path):
-            print(f"File {file_path} not found")
+            Logger.error(f"File {file_path} not found")
             exit(-1)
         try:
             with open(file_path) as file:
                 return [line.strip() for line in file.readlines()]
         except Exception as e:
-            print(f"Error reading file: {e}")
+            Logger.error(f"Error reading file: {e}")
             exit(-1)
 
     def _get_file_path(self, path: str = None, size: int = 100) -> str:

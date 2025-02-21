@@ -1,5 +1,4 @@
-from print_color import print
-
+from cerber.utils import Logger
 
 class FileBase:
     def __init__(self, filename):
@@ -12,7 +11,7 @@ class FileBase:
             with open(filename) as filehandle:
                 return [line.strip('\n') for line in filehandle.readlines()]
         except Exception as e:
-            print(e, color='red')
+            Logger.error(e)
             exit(1)
 
     def __iter__(self):

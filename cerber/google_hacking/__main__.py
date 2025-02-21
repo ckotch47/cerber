@@ -10,8 +10,10 @@ def main():
         pyfiglet.figlet_format("cerber - gh"),
         color='c'
     )
-    if not arguments.l:
-        GoogleHacking().hack(arguments.host, arguments.m)
-    if arguments.l:
-        GoogleHacking().link_list(arguments.host)
+    GoogleHacking().link_list(arguments.host)
+    # todo may be rework or delete
+    # if not arguments.l:
+    #     GoogleHacking().hack(arguments.host, arguments.m)
+    # if arguments.l:
+    #     GoogleHacking().link_list(arguments.host)
 

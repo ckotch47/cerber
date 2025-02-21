@@ -1,7 +1,7 @@
 import socket
 from print_color import print
-from cerber.ddfu.src.common.progress_bar_base import ProgressBarBase
-from cerber.ddfu.src.common.file_base import FileBase
+from cerber.utils.progress_bar_base import ProgressBarBase
+from cerber.utils.file_base import FileBase
 
 
 class PortScan:

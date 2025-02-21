@@ -3,6 +3,10 @@ import socket
 import struct
 
 from print_color import print
+
+from cerber.utils import Logger
+
+
 class OSDetector:
     def __init__(self):
         self.os_ttl_map = {
@@ -39,7 +43,7 @@ class OSDetector:
             else:
                 return None
         except OSError as e:
-            print(f"for OS detected requires root privileges", color='r', tag="fail", tag_color='r')
+            Logger.error(f"for OS detected requires root privileges")
             exit(-1)
         except Exception as e:
             return None
