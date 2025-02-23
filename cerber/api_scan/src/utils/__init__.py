@@ -58,4 +58,14 @@ Example usage:
         help='show only (example -exclude 401, 403)'
     )
 
+    parser.add_argument(
+        '-l',
+        type=bool,
+        default=False,
+        required=False,
+        action=argparse.BooleanOptionalAction,
+        help='list scan'
+    )
+
+
     return parser.parse_args()

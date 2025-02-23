@@ -1,14 +1,15 @@
 from importlib import metadata
 
 from cerber.ddfu.src import DnsBruteforceService, DnsResolverService, run_ddos_request, AdminFinder, dns_get_ptr, PortScan, Fuzzing, OSDetector
-from cerber.utils import Logger
+from cerber.utils import Logger, RequestService
 from print_color import print
 import pyfiglet
 
 from cerber.ddfu.utils.parser import m_arguments
 
+Logger.log_level = 0
+
 def main_dns_resolve(arguments):
-    Logger.log_level = 0
 
     dns_resolve = DnsResolverService()
     dns_bruteforce = DnsBruteforceService()
@@ -19,26 +20,30 @@ def main_dns_resolve(arguments):
     if not arguments.host:
         return
 
-    arguments.host = arguments.host.replace('http://', '').replace('https://', '')
 
     if not arguments.b:
         dns_resolve.resolve(arguments.host, show_failed=True)
     else:
         dns_bruteforce.bruteforce_domain(arguments.host, arguments.w, depth)
-        dns_bruteforce.print_domains()
+
     return
 
 
 def main():
     arguments = m_arguments
+    arguments.host = arguments.host.replace('http://', '').replace('https://', '')
     print(
         pyfiglet.figlet_format("cerber"),
         color='c'
     )
     try:
+        if arguments.timeout:
+            RequestService.sleep_time = int(arguments.timeout)
+
         if arguments.v:
             print(metadata.version('cerber'))
             return
+
         if arguments.ddos:
             run_ddos_request(arguments.host, arguments.port, arguments.t)
             return
@@ -46,18 +51,17 @@ def main():
             AdminFinder().admin_finder_request(arguments.host, arguments.timeout, arguments.w, arguments.so, arguments.exc)
             return
 
-        if arguments.ip and arguments.os:
-            detector = OSDetector()
-            detector.run(arguments.ip)
-            return
+        if arguments.ip:
+            if arguments.os:
+                detector = OSDetector()
+                detector.run(arguments.ip)
+                return
+            elif arguments.map:
+                PortScan().scan(arguments.ip, arguments.w)
+            else:
+                dns_get_ptr.get(arguments.ip)
+                dns_get_ptr.print_()
 
-        if arguments.ip and not arguments.map:
-            dns_get_ptr.get(arguments.ip)
-            dns_get_ptr.print_()
-            return
-        if arguments.ip and arguments.map:
-            PortScan().scan(arguments.ip, arguments.w)
-            return
 
         if arguments.host and arguments.map:
             host_ip = DnsResolverService().resolve(arguments.host, show_failed=True)
@@ -66,6 +70,7 @@ def main():
         if arguments.fuzz:
             Fuzzing(arguments.url, arguments.method,  arguments.header, arguments.body, arguments.w, arguments.timeout).fuzz()
             return
+
         main_dns_resolve(arguments)
     except KeyboardInterrupt:
         print('exit by user', color='r')

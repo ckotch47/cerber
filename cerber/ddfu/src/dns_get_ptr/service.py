@@ -12,10 +12,10 @@ class DnsGetPtr:
             result = dns.resolver.resolve(f'{ip}.in-addr.arpa.', 'PTR')
             for val in result:
                 self.record.append(val.to_text())
-            return
+            return self.record
         except Exception as e:
             Logger.error(e)
-            exit(1)
+            raise Exception(e)
 
     def print_(self):
         for i in self.record:

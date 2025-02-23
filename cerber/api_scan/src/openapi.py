@@ -3,7 +3,7 @@ import requests
 from print_color import print
 
 from cerber.api_scan.src.utils.progress_bar import ProgressBarBase
-from cerber.utils import Logger
+from cerber.utils import Logger, HeaderServices
 
 
 # TODO genearate param for {payeload}
@@ -48,7 +48,9 @@ class OpenApi:
         except:
             pass
 
+
     def openapi_scan_main(self):
+        HeaderServices.set_default()
         if str(self.arg.w).find('http') != -1:
             try:
                 self.openapi_json = json.loads(str(requests.get(self.arg.w).text))

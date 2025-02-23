@@ -19,5 +19,5 @@ class Logger:
 
     @staticmethod
     def error(text):
-        if Logger.log_level:
+        if Logger.log_level >= -1:
             print(text, color='r', tag_color='r', tag='error')

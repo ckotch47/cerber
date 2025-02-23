@@ -25,3 +25,11 @@ class ResponseCollector:
                 print(i.text, color=i.color, tag_color=i.tag_color, tag=i.tag)
             else:
                 print(i.tag, i.text)
+
+    @staticmethod
+    def print_success(text: str):
+        print(text, color='c', tag="success", tag_color='g')
+
+    @staticmethod
+    def print_failure(text: str):
+        print(text, color='c', tag="fail", tag_color='r')

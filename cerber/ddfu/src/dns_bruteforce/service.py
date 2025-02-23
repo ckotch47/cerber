@@ -1,9 +1,8 @@
 import os
 
 from cerber.ddfu.src.dns_resolver.service import DnsResolverService
-from print_color import print
 
-from cerber.utils import Logger
+from cerber.utils import Logger, ResponseCollector, ResponseCollectorDto
 from cerber.utils.progress_bar_base import ProgressBarBase
 
 
@@ -18,18 +17,17 @@ class DnsBruteforceService(DnsResolverService):
         file_path = self._get_file_path(path, size)
         if not os.path.exists(file_path):
             Logger.error(f"File {file_path} not found")
-            exit(-1)
+            raise FileNotFoundError(f"File {file_path} not found")
         try:
             with open(file_path) as file:
                 return [line.strip() for line in file.readlines()]
         except Exception as e:
             Logger.error(f"Error reading file: {e}")
-            exit(-1)
+            raise FileNotFoundError(f"File {file_path} not found")
 
     def _get_file_path(self, path: str = None, size: int = 100) -> str:
-        if path is None:
-            if size in {100, 500, 1000, 10000}:
-                return f'{self.path}/subdomains-{size}.txt'
+        if path is None and size in {100, 500, 1000, 10000}:
+            return f'{self.path}/subdomains-{size}.txt'
         return path if path else None
 
     def _resolve_subdomain(self, subdomain: str):
@@ -38,6 +36,14 @@ class DnsBruteforceService(DnsResolverService):
             if r:
                 self.scanned_domain.append(subdomain)
                 self.domains.append([subdomain, r])
+                ResponseCollector.response.append(
+                    ResponseCollectorDto(
+                        text=f'{subdomain} {r}',
+                        color='c',
+                        tag_color='g',
+                        tag='success'
+                    )
+                )
 
     def bruteforce_domain(self,
                           domain: str = None,
@@ -47,7 +53,17 @@ class DnsBruteforceService(DnsResolverService):
 
         if domain not in self.scanned_domain:
             self.scanned_domain.append(domain)
-            self.domains.append([f'{domain}', self.resolve(domain, False)])
+            t = self.resolve(domain, False)
+            self.domains.append([f'{domain}', t])
+            ResponseCollector.response.append(
+                ResponseCollectorDto(
+                    text=f'{domain} {t}',
+                    color='c',
+                    tag_color='g',
+                    tag='success'
+                )
+            )
+
 
         sub_list = self._get_file(path, size)
         self.file_len = self.file_len + len(sub_list)
@@ -59,15 +75,14 @@ class DnsBruteforceService(DnsResolverService):
             if not self.debug:
                 self.progress_bar.__next__()
 
-        if depth == 0:
+        if depth <= 0:
             return
 
         for domain in self.domains:
-            self.bruteforce_domain(domain[0], path, depth - 1, size)
+            self.bruteforce_domain(domain[0], path, depth - 1 , size)
+
 
         self.progress_bar.__del__()
+        ResponseCollector.print_response()
         return
 
-    def print_domains(self):
-        for i in self.domains:
-            print(f'{i[0]}  {i[1]}', tag_color='g', tag='success', color='c')

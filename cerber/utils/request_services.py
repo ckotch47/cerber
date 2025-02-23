@@ -14,18 +14,33 @@ class RequestService:
         if params is None:
             params = {}
 
-        if header is None:
-            HeaderServices.set_default()
-            header = HeaderServices.headers
-        else:
-            HeaderServices.set(json.dumps(header))
-
         try:
+
             time.sleep(RequestService.sleep_time)
             return httpx.get(
                 url,
-                headers=header,
+                headers=header if header else HeaderServices.headers,
                 params=params,
+                follow_redirects=RequestService.allow_redirects
+            )
+        except Exception as e:
+            Logger.error(e)
+            return None
+
+    @staticmethod
+    def request(method, url: str, payload=None, header=None):
+        if payload is None:
+            payload = {}
+
+        try:
+
+            time.sleep(RequestService.sleep_time)
+            return httpx.request(
+                method,
+                url,
+                headers=header if header else HeaderServices.headers,
+                params=payload,
+                data=payload,
                 follow_redirects=RequestService.allow_redirects
             )
         except Exception as e:

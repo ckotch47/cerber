@@ -14,4 +14,5 @@ class HeaderServices:
 
     @staticmethod
     def set(header_json_string: str):
-        HeaderServices.headers = json.loads(header_json_string)
+
+            HeaderServices.headers = json.loads(header_json_string)

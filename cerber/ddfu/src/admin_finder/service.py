@@ -16,8 +16,8 @@ class AdminFinder:
                              exclude: str = None):
 
         file_base = FileBase(filename)
-        self.show = str(show).split(',') if show else []
-        self.exclude = str(exclude).split(',') if exclude else []
+        self.show = show.split(',') if show else []
+        self.exclude = exclude.split(',') if exclude else []
 
         self.progress_bar.new_max(file_base.max)
 
@@ -36,29 +36,28 @@ class AdminFinder:
 
 
     def iteration(self, path: str):
-        res = RequestService.get(path) # self._request(path)
-        if not self.show and 100 < res.status_code < 600 and str(res.status_code) not in self.exclude:
-            ResponseCollector.response.append(
-                ResponseCollectorDto(
-                    path, 'c',
-                    'g', f'{res.status_code}'
-                )
-            )
-
-        elif self.show and str(res.status_code) in self.show:
-            ResponseCollector.response.append(
-                ResponseCollectorDto(
-                    path, 'c',
-                    'g', f'{res.status_code}'
-                )
-            )
-
-        if not self.exclude:
+        try:
+            res = RequestService.get(path)
+            if res is None:
+                return
+            if self.is_status_included(res.status_code):
+                self.add_response(path, res.status_code, 'c', 'g')
+            else:
+                self.add_response(path, res.status_code, 'c', 'r')
+        except Exception as e:
+            # Logger.error(f"Error during request to {path}: {e}")
             pass
-        elif self.exclude and not (100 < res.status_code < 600) and str(res.status_code) not in self.exclude:
-            ResponseCollector.response.append(
-                ResponseCollectorDto(
-                    path, 'c',
-                    'r', f'{res.status_code}'
-                )
+
+    def is_status_included(self, status_code: int) -> bool:
+        if self.show and str(status_code) in self.show:
+            return True
+        if self.exclude and str(status_code) in self.exclude:
+            return False
+        return 100 < status_code < 600
+
+    def add_response(self, path: str, status_code: int, color: str, tag_color: str):
+        ResponseCollector.response.append(
+            ResponseCollectorDto(
+                path, color, tag_color, str(status_code)
             )
+        )
