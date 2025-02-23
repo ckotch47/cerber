@@ -31,7 +31,10 @@ def main_dns_resolve(arguments):
 
 def main():
     arguments = m_arguments
-    arguments.host = arguments.host.replace('http://', '').replace('https://', '')
+    try:
+        arguments.host = arguments.host.replace('http://', '').replace('https://', '')
+    except:
+        pass
     print(
         pyfiglet.figlet_format("cerber"),
         color='c'
