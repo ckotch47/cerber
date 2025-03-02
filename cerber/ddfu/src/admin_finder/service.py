@@ -42,8 +42,8 @@ class AdminFinder:
                 return
             if self.is_status_included(res.status_code):
                 self.add_response(path, res.status_code, 'c', 'g')
-            else:
-                self.add_response(path, res.status_code, 'c', 'r')
+            # else:
+            #     self.add_response(path, res.status_code, 'c', 'r')
         except Exception as e:
             # Logger.error(f"Error during request to {path}: {e}")
             pass

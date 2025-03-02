@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cerber"
-version = "2025.02.1"
+version = "2025.02.3"
 description = ""
 authors = ["ckotch47"]
 readme = "README.md"

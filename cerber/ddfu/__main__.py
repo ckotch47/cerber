@@ -10,7 +10,10 @@ from cerber.ddfu.utils.parser import m_arguments
 Logger.log_level = 0
 
 def main_dns_resolve(arguments):
-
+    try:
+        arguments.host = arguments.host.replace('http://', '').replace('https://', '')
+    except:
+        pass
     dns_resolve = DnsResolverService()
     dns_bruteforce = DnsBruteforceService()
     dns_bruteforce.debug = False
@@ -31,10 +34,7 @@ def main_dns_resolve(arguments):
 
 def main():
     arguments = m_arguments
-    try:
-        arguments.host = arguments.host.replace('http://', '').replace('https://', '')
-    except:
-        pass
+
     print(
         pyfiglet.figlet_format("cerber"),
         color='c'

@@ -14,5 +14,7 @@ class HeaderServices:
 
     @staticmethod
     def set(header_json_string: str):
-
-            HeaderServices.headers = json.loads(header_json_string)
+            try:
+                HeaderServices.headers = json.loads(header_json_string)
+            except:
+                pass
